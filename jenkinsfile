@@ -1,8 +1,8 @@
 pipeline {
     agent any
     tools {
-        jdk 'jdk17'
-        nodejs 'node23'
+        jdk 'jdk21'
+        nodejs 'node25'
     }
     environment {
         SCANNER_HOME=tool 'sonar-scanner'
@@ -15,7 +15,7 @@ pipeline {
         }
         stage ("Git Checkout") {
             steps {
-                git 'https://github.com/KastroVKiran/Zomato-Project-Kastro.git'
+                git 'https://github.com/kishoretatt/Zomato-bykishore.git'
             }
         }
         stage("Sonarqube Analysis"){
@@ -77,7 +77,7 @@ pipeline {
         }
         stage ("Deploy to Container") {
             steps {
-                sh 'docker run -d --name zomato -p 3000:3000 kastrov/zomato:latest'
+                sh 'docker run -d --name zomato -p 3000:3000 kishore1208/zomato:latest'
             }
         }
     }
@@ -100,7 +100,7 @@ pipeline {
                 </body>
                 </html>
             """,
-            to: 'kastrokiran@gmail.com',
+            to: 'kishore.tatt@gmail.com',
             mimeType: 'text/html',
             attachmentsPattern: 'trivy.txt'
         }
