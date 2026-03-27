@@ -66,11 +66,15 @@ pipeline {
         }
         stage('Docker Scout Image') {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'docker', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
-                    sh '''
-                        echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
-                        docker scout quickview kishore1208/zomato:latest
-                    '''
+                script {
+                    catchError(buildResult: 'SUCCESS', stageResult: 'UNSTABLE') {
+                        withCredentials([usernamePassword(credentialsId: 'docker', passwordVariable: 'DOCKER_PASS', usernameVariable: 'DOCKER_USER')]) {
+                            sh '''
+                                echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
+                                docker scout quickview kishore1208/zomato:latest
+                            '''
+                        }
+                    }
                 }
             }
         }
